@@ -1,6 +1,5 @@
 package com.j_abogabal.jdbccourse.model;
 
-
 import java.util.Date;
 
 public class Employee {

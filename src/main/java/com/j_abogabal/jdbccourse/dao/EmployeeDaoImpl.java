@@ -22,18 +22,17 @@ public class EmployeeDaoImpl implements EmployeeDao {
         List<Employee> employees = new LinkedList<>();
         String query = "SELECT * FROM employee;";
         try (PreparedStatement preparedStatement = con.prepareStatement(query)) {
-
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                Employee employee = new Employee(
-                        resultSet.getInt("id"),
-                        resultSet.getString("name"),
-                        resultSet.getBoolean("gender"),
-                        resultSet.getDate("birth_date"),
-                        resultSet.getDouble("salary"));
-                        employees.add(employee);              
+                Employee employee = Employee.builder()
+                        .id(resultSet.getInt("id"))
+                        .name(resultSet.getString("name"))
+                        .gender(resultSet.getBoolean("gender"))
+                        .birthDate(resultSet.getDate("birth_date"))
+                        .salary(resultSet.getDouble("salary"))
+                        .build();
+                employees.add(employee);
             }
-
         } catch (SQLException se) {
             se.printStackTrace();
         } finally {
@@ -43,14 +42,13 @@ public class EmployeeDaoImpl implements EmployeeDao {
                 se.printStackTrace();
             }
         }
-
         return employees;
     }
 
     @Override
     public Employee findById(int id) {
         Connection con = DBConnection.getConnection();
-        if(con == null) {
+        if (con == null) {
             return null;
         }
 
@@ -58,16 +56,15 @@ public class EmployeeDaoImpl implements EmployeeDao {
         try (PreparedStatement preparedStatement = con.prepareStatement(query)) {
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if(resultSet.next()) {
-                Employee employee = new Employee(
-                    resultSet.getInt("id"),
-                    resultSet.getString("name"),
-                    resultSet.getBoolean("gender"),
-                    resultSet.getDate("birth_date"),
-                    resultSet.getDouble("salary"));
-                return employee;
+            if (resultSet.next()) {
+                return Employee.builder()
+                        .id(resultSet.getInt("id"))
+                        .name(resultSet.getString("name"))
+                        .gender(resultSet.getBoolean("gender"))
+                        .birthDate(resultSet.getDate("birth_date"))
+                        .salary(resultSet.getDouble("salary"))
+                        .build();
             }
-
         } catch (SQLException se) {
             se.printStackTrace();
         } finally {
@@ -77,7 +74,6 @@ public class EmployeeDaoImpl implements EmployeeDao {
                 se.printStackTrace();
             }
         }
-
         return null;
     }
 
@@ -87,7 +83,6 @@ public class EmployeeDaoImpl implements EmployeeDao {
         if (con == null) {
             return;
         }
-
         if (employee.getId() > 0) { // Update
             String query = "UPDATE employee SET name=?, gender=?, birth_date=?, salary=? WHERE id=?;";
             try (PreparedStatement preparedStatement = con.prepareStatement(query)) {
@@ -129,12 +124,12 @@ public class EmployeeDaoImpl implements EmployeeDao {
     @Override
     public void deleteById(int id) {
         Connection con = DBConnection.getConnection();
-        if(con == null) {
+        if (con == null) {
             return;
         }
 
         String query = "DELETE FROM employee WHERE id=?;";
-        try(PreparedStatement preparedStatement = con.prepareStatement(query)) {
+        try (PreparedStatement preparedStatement = con.prepareStatement(query)) {
             preparedStatement.setInt(1, id);
 
             preparedStatement.executeUpdate();

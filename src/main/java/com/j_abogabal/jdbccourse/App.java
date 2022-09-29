@@ -9,15 +9,15 @@ public class App {
     public static void main(String[] args) {
         EmployeeDao employeeDao = new EmployeeDaoImpl();
         Employee employee = Employee.builder()
-                .name("Mos3ad")
+                .name("Ahmed")
                 .gender(false)
                 .birthDate(new Date())
                 .salary(4992)
                 .build();
-        employeeDao.save(employee); 
-
-        employeeDao.deleteById(41);
-        System.out.println(employeeDao.findById(41));
+        //employeeDao.save(employee);
+        
+        //System.out.println(employeeDao.findById(2));
+        employeeDao.deleteById(2);
         employeeDao.findAll().forEach(System.out::println);
         System.out.println("Done!");
     }

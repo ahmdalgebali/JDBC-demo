@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -16,7 +17,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
     public List<Employee> findAll() {
         Connection con = DBConnection.getConnection();
         if (con == null) {
-            return null;
+            return Collections.emptyList();
         }
 
         List<Employee> employees = new LinkedList<>();
@@ -51,7 +52,6 @@ public class EmployeeDaoImpl implements EmployeeDao {
         if (con == null) {
             return null;
         }
-
         String query = "SELECT * FROM employee WHERE id=?;";
         try (PreparedStatement preparedStatement = con.prepareStatement(query)) {
             preparedStatement.setInt(1, id);
